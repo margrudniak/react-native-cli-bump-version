@@ -3,7 +3,7 @@ import path from "path";
 
 // -- Types
 
-type SemVer = "major" | "minor" | "patch";
+type SemVer = "major" | "minor" | "patch" | "premajor" | "preminor" | "prepatch";
 
 type Platforms = "android" | "ios" | "all";
 
@@ -56,12 +56,24 @@ const incrementSemVer = (current: string, type: SemVer | undefined) => {
         return [major + 1, 0, 0].join(".");
     }
 
+    if (type === "premajor") {
+        return [major + 1, 0, 0].join(".") + '-1';
+    }
+
     if (type === "minor") {
         return [major, minor + 1, 0].join(".");
     }
 
+    if (type === "preminor") {
+        return [major, minor + 1, 0].join(".") + '-1';
+    }
+
     if (type === "patch") {
         return [major, minor, patch + 1].join(".");
+    }
+
+    if (type === "prepatch") {
+        return [major, minor, patch + 1].join("."); + '-1';
     }
 
     throw new Error(`'${type}' is not a semver type`);
